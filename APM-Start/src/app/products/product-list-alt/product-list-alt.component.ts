@@ -7,7 +7,7 @@ import { ProductService } from '../product.service';
 
 @Component({
   selector: 'pm-product-list',
-  templateUrl: './product-list-alt.component.html'
+  templateUrl: './product-list-alt.component.html',
 })
 export class ProductListAltComponent implements OnInit, OnDestroy {
   pageTitle = 'Products';
@@ -17,12 +17,12 @@ export class ProductListAltComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   sub: Subscription;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.sub = this.productService.getProducts().subscribe(
-      products => this.products = products,
-      error => this.errorMessage = error
+      (products) => (this.products = products),
+      (error) => (this.errorMessage = error)
     );
   }
 
