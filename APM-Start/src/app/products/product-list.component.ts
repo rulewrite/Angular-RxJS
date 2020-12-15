@@ -7,7 +7,7 @@ import { ProductService } from './product.service';
 
 @Component({
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+  styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Product List';
@@ -17,14 +17,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   sub: Subscription;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.sub = this.productService.getProducts()
-      .subscribe(
-        products => this.products = products,
-        error => this.errorMessage = error
-      );
+    this.sub = this.productService.getProducts().subscribe(
+      (products) => (this.products = products),
+      (error) => (this.errorMessage = error)
+    );
   }
 
   ngOnDestroy(): void {
