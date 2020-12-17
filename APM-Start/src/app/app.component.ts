@@ -41,4 +41,4 @@ export class AppComponent implements OnInit {
   }
 }
 
-// 6강 완료
+// 7강 완료
