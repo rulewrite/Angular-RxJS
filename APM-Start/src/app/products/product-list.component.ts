@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { EMPTY } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { ProductCategoryService } from '../product-categories/product-category.service';
 
 import { ProductService } from './product.service';
 
@@ -11,10 +12,16 @@ import { ProductService } from './product.service';
 export class ProductListComponent {
   pageTitle = 'Product List';
   errorMessage = '';
-  categories;
   selectedCategoryId = 1;
 
   products$ = this.productService.productsWithCategory$.pipe(
+    catchError((error: string) => {
+      this.errorMessage = error;
+      return EMPTY;
+    })
+  );
+
+  categories$ = this.productCategoryService.productCategories$.pipe(
     catchError((error: string) => {
       this.errorMessage = error;
       return EMPTY;
@@ -33,13 +40,16 @@ export class ProductListComponent {
     )
   );
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private productCategoryService: ProductCategoryService
+  ) {}
 
   onAdd(): void {
     console.log('Not yet implemented');
   }
 
   onSelected(categoryId: string): void {
-    console.log('Not yet implemented');
+    this.selectedCategoryId = Number(categoryId);
   }
 }
