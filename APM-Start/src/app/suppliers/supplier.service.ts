@@ -4,12 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SupplierService {
   suppliersUrl = 'api/suppliers';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   private handleError(err: any): Observable<never> {
     // in a real world app, we may send the server to some remote logging infrastructure
@@ -26,5 +26,4 @@ export class SupplierService {
     console.error(err);
     return throwError(errorMessage);
   }
-
 }
