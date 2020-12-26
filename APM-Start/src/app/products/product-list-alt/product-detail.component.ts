@@ -21,5 +21,12 @@ export class ProductDetailComponent {
     })
   );
 
+  productSuppliers$ = this.productService.selectedProductSuppliers$.pipe(
+    catchError((error) => {
+      this.errorMessageSubject.next(error);
+      return EMPTY;
+    })
+  );
+
   constructor(private productService: ProductService) {}
 }
