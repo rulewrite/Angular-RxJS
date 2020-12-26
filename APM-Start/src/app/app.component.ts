@@ -13,4 +13,4 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {}
 }
 
-// 10강 완료
+// 11강 완료
