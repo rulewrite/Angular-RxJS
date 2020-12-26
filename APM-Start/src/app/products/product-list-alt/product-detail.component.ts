@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { EMPTY, Subject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { EMPTY, Subject, combineLatest } from 'rxjs';
+import { catchError, filter, map } from 'rxjs/operators';
 
 import { ProductService } from '../product.service';
 
@@ -35,6 +35,19 @@ export class ProductDetailComponent {
       this.errorMessageSubject.next(error);
       return EMPTY;
     })
+  );
+
+  viewModel$ = combineLatest([
+    this.product$,
+    this.productSuppliers$,
+    this.pageTitle$,
+  ]).pipe(
+    filter(([product]) => Boolean(product)),
+    map(([product, productSuppliers, pageTitle]) => ({
+      product,
+      productSuppliers,
+      pageTitle,
+    }))
   );
 
   constructor(private productService: ProductService) {}
