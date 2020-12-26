@@ -9,7 +9,7 @@ import {
   Subject,
   throwError,
 } from 'rxjs';
-import { catchError, map, scan, tap } from 'rxjs/operators';
+import { catchError, map, scan, shareReplay, tap } from 'rxjs/operators';
 
 import { Product } from './product';
 import { Supplier } from '../suppliers/supplier';
@@ -44,7 +44,8 @@ export class ProductService {
             searchKey: [product.productName],
           } as Product)
       )
-    )
+    ),
+    shareReplay(1)
   );
 
   private productSelectedSubject = new BehaviorSubject<number>(0);
@@ -57,7 +58,8 @@ export class ProductService {
     map(([products, selectedProductId]) =>
       products.find((product) => product.id === selectedProductId)
     ),
-    tap((product) => console.log('selectedProduct', product))
+    tap((product) => console.log('selectedProduct', product)),
+    shareReplay(1)
   );
 
   private productInsertedSubject = new Subject<Product>();
