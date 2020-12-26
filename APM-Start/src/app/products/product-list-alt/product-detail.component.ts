@@ -21,7 +21,7 @@ export class ProductDetailComponent {
     })
   );
 
-  productSuppliers$ = this.productService.selectedProductSuppliers$.pipe(
+  productSuppliers$ = this.productService.selectedProductSuppliersJustInTime$.pipe(
     catchError((error) => {
       this.errorMessageSubject.next(error);
       return EMPTY;

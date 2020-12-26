@@ -4,12 +4,23 @@ import { HttpClient } from '@angular/common/http';
 import {
   BehaviorSubject,
   combineLatest,
+  from,
   merge,
   Observable,
   Subject,
   throwError,
 } from 'rxjs';
-import { catchError, map, scan, shareReplay, tap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  map,
+  mergeMap,
+  scan,
+  shareReplay,
+  switchMap,
+  tap,
+  toArray,
+} from 'rxjs/operators';
 
 import { Product } from './product';
 import { Supplier } from '../suppliers/supplier';
@@ -82,6 +93,21 @@ export class ProductService {
     map(([selectedProduct, suppliers]) => {
       return suppliers.filter((supplier) =>
         selectedProduct.supplierIds.includes(supplier.id)
+      );
+    })
+  );
+
+  selectedProductSuppliersJustInTime$ = this.selectedProduct$.pipe(
+    filter((selectedProduct) => Boolean(selectedProduct)),
+    switchMap((selectedProduct) => {
+      return from(selectedProduct.supplierIds).pipe(
+        mergeMap((supplierId) => {
+          return this.http.get<Supplier>(`${this.suppliersUrl}/${supplierId}`);
+        }),
+        toArray(),
+        tap((suppliers) =>
+          console.log('product suppliers', JSON.stringify(suppliers))
+        )
       );
     })
   );
